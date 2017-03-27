@@ -45,18 +45,18 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
 ```
 3. In your model you need to declare References using the type LazyReference<T> as in the example below:
 ```c#
-public class Course
+public class Department
 {
-    private LazyReference<Department> _departmentLazy = new LazyReference<Department>();
-    public Department Department
+    private LazyReference<Instructor> _administratorLazy = new LazyReference<Instructor>();
+    public Instructor Administrator
     {
         get
         {
-            return _departmentLazy.GetValue(this, nameof(Department));
+            return _administratorLazy.GetValue(this, nameof(Administrator));
         }
         set
         {
-            _departmentLazy.SetValue(value);
+            _administratorLazy.SetValue(value);
         }
     }
 }
