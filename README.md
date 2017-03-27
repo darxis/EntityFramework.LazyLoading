@@ -1,2 +1,2 @@
 # EntityFramework.LazyLoading
-LazyLoading for EF
+Lazy Loading for EF
