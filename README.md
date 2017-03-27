@@ -43,4 +43,22 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
     }
 }
 ```
-3. That's all, LazyLoading enabled.
+3. In your model you need to declare References using the type LazyReference<T> as in the example below:
+```c#
+public class Course
+{
+    private LazyReference<Department> _departmentLazy = new LazyReference<Department>();
+    public Department Department
+    {
+        get
+        {
+            return _departmentLazy.GetValue(this, nameof(Department));
+        }
+        set
+        {
+            _departmentLazy.SetValue(value);
+        }
+    }
+}
+```
+4. That's all, LazyLoading enabled.
