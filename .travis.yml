@@ -8,13 +8,16 @@ services:
   - mysql
   - postgresql
 env:
-  - DB=PostgreSql CONFIGURATION=Release
-  - DB=MySql CONFIGURATION=Release
+  global:
+    - DB_NAME=ContosoUniversity
+  matrix:
+    - DB=PostgreSql CONFIGURATION=Release
+    - DB=MySql CONFIGURATION=Release
 install:
   - dotnet restore
 before_script:
   - export Microsoft_EntityFrameworkCore_LazyLoading_Tests_DatabaseType=$DB 
-  - sh -c "if [ '$DB' = 'MySql' ]; then mysql -e 'CREATE TABLE `__EFMigrationsHistory` ( `MigrationId` nvarchar(150) NOT NULL, `ProductVersion` nvarchar(32) NOT NULL, PRIMARY KEY (`MigrationId`) );'; fi"
+  - sh -c "if [ '$DB' = 'MySql' ]; then mysql -e 'CREATE DATABASE \`$DB_NAME\`; USE \`$DB_NAME\`; CREATE TABLE \`__EFMigrationsHistory\` (\`MigrationId\` nvarchar(150) NOT NULL, \`ProductVersion\` nvarchar(32) NOT NULL, PRIMARY KEY (\`MigrationId\`));'; fi"
 script:
   - dotnet build --configuration $CONFIGURATION
   - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test --configuration $CONFIGURATION)
