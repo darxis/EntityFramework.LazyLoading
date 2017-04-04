@@ -8,9 +8,8 @@ services:
   - mysql
   - postgresql
 env:
-  - CONFIGURATION=Release
-  - DB=PostgreSql
-  - DB=MySql
+  - DB=PostgreSql CONFIGURATION=Release
+  - DB=MySql CONFIGURATION=Release
 install:
   - dotnet restore
 before_script:
