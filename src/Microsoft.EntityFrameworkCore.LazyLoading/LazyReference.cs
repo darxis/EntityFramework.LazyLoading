@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.LazyLoading.Exceptions;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
-using Microsoft.EntityFrameworkCore.LazyLoading.Internal.Exceptions;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading
 {
     public sealed class LazyReference<T>
         where T : class
     {
-        private bool _isLoading = false;
+        private bool _isLoading;
 
-        private bool _isLoaded = false;
+        private bool _isLoaded;
 
         private T _value;
 
@@ -35,12 +35,13 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
                 var concurrencyDetector = _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
                 if (concurrencyDetector == null)
                 {
+                    _isLoading = false;
                     throw new LazyLoadingConfigurationException($"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
                 }
 
                 if (concurrencyDetector.IsInOperation())
                 {
-                    this._isLoading = false;
+                    _isLoading = false;
                     return _value;
                 }
 

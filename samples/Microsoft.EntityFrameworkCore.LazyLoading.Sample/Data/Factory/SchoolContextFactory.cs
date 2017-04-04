@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
+using Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
 {
@@ -27,6 +30,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
             {
                 dbContextOptionsBuilder.ReplaceService<IEntityMaterializerSource, LazyLoadingEntityMaterializerSource<SchoolContext>>();
                 dbContextOptionsBuilder.ReplaceService<EntityFrameworkCore.Internal.IConcurrencyDetector, ConcurrencyDetector>();
+                dbContextOptionsBuilder.ReplaceService<ICompiledQueryCache, PerDbContextCompiledQueryCache>();
             }
             
 
@@ -37,6 +41,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
             if (_isLazy)
             {
                 (ctx.GetService<IEntityMaterializerSource>() as LazyLoadingEntityMaterializerSource<SchoolContext>).SetDbContext(ctx);
+                (ctx.GetService<ICompiledQueryCache>() as PerDbContextCompiledQueryCache).SetDbContext(ctx);
             }
 
             return ctx;
