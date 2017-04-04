@@ -23,6 +23,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables("Microsoft.EntityFrameworkCore.LazyLoading.Tests_")
                 .Build();
 
             SqlServerDatabaseConfig = new DatabaseConfig(config["SqlServer:ConnectionString"]);
