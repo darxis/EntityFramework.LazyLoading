@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
 {
-    public abstract class SchoolContextFactoryBase : IDbContextFactory<SchoolContext>
+    public class SchoolContextFactory : IDbContextFactory<SchoolContext>
     {
         private readonly bool _isLazy;
 
-        public SchoolContextFactoryBase(bool isLazy)
+        public SchoolContextFactory() : this(false)
+        {
+        }
+
+        public SchoolContextFactory(bool isLazy)
         {
             _isLazy = isLazy;
         }
