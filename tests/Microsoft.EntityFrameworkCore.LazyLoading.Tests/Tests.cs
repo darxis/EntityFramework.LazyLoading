@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
 {
-    public class SqlServerTests : SqlServerDatabaseTestBase
+    public class Tests : DatabaseTestBase
     {
         [Fact]
         public void ShouldNotThrowWhenExecutingTheSameQueryOnTwoDifferentDbContextsAfterDisposingTheFirstOne()

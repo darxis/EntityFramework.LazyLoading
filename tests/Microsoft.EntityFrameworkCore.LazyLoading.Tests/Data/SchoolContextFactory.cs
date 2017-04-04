@@ -1,24 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration;
-using Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
-namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
+namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data
 {
-    public abstract class SqlServerDatabaseTestBase
+    public class SchoolContextFactory : IDbContextFactory<SchoolContext>
     {
-        protected SchoolContext CreateDbContext()
+        public SchoolContext Create(DbContextFactoryOptions options)
         {
             var config = Config.GetInstance();
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
 
-            dbContextOptionsBuilder
-                .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
+            switch (config.DatabaseType)
+            {
+                case Config.Database.MySql:
+                    dbContextOptionsBuilder
+                        .UseMySQL(config.MySqlDatabaseConfig.ConnectionString);
+                    break;
+                case Config.Database.SqlServer:
+                    dbContextOptionsBuilder
+                        .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
+                    break;
+                case Config.Database.PostgreSql:
+                    dbContextOptionsBuilder
+                        .UseNpgsql(config.PostgreSqlDatabaseConfig.ConnectionString);
+                    break;
+                default:
+                    throw new Exception($"Unknown database type (was '{config.DatabaseType}')");
+            }
 
             // LazyLoading specific
             dbContextOptionsBuilder.ReplaceService<IEntityMaterializerSource, LazyLoadingEntityMaterializerSource<SchoolContext>>();
