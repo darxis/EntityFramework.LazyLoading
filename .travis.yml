@@ -7,7 +7,14 @@ sudo: required
 services:
   - mysql
   - postgresql
-script:
+env:
+  - DB=PostgreSql
+  - DB=MySql
+install:
   - dotnet restore
+before_script:
+  - export Microsoft_EntityFrameworkCore_LazyLoading_Tests_DatabaseType=$DB  
+script:
   - dotnet build -c Release
-  - dotnet test tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests.csproj -c Release
+  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet ef database update)
+  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test -c Release)
