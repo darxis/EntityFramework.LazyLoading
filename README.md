@@ -43,22 +43,26 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
     }
 }
 ```
-3. In your model you need to declare References using the type LazyReference<T> as in the example below:
+3. In your model you need to declare References using the type LazyReference<T>. Collections don't require additional configuration in your model, just use the ICollection<> type.
 ```c#
-public class Department
+public class Parent
 {
-    private LazyReference<Instructor> _administratorLazy = new LazyReference<Instructor>();
-    public Instructor Administrator
+    public ICollection<Child> Childs { get; set; }
+}
+
+public class Child
+{
+    private LazyReference<Parent> _parentLazy = new LazyReference<Parent>();
+    public Parent Parent
     {
         get
         {
-            return _administratorLazy.GetValue(this, nameof(Administrator));
+            return _parentLazy.GetValue(this, nameof(Parent));
         }
         set
         {
-            _administratorLazy.SetValue(value);
+            _parentLazy.SetValue(value);
         }
-    }
 }
 ```
 4. That's all, LazyLoading enabled.
