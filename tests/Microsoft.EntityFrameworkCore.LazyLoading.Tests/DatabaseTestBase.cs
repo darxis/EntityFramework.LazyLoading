@@ -23,7 +23,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
             {
                 case Config.Database.MySql:
                     dbContextOptionsBuilder
-                        .UseMySQL(config.SqlServerDatabaseConfig.ConnectionString);
+                        .UseMySQL(config.MySqlDatabaseConfig.ConnectionString);
                     break;
                 case Config.Database.SqlServer:
                     dbContextOptionsBuilder
