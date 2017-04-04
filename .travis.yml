@@ -1,3 +1,4 @@
 language: csharp
 solution: EntityFramework.LazyLoading.sln
+mono: none
 dotnet: 1.0.1
