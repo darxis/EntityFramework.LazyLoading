@@ -15,6 +15,16 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
     {
         protected SchoolContext CreateDbContext()
         {
+            using (var ctx = CreateDbContextInternal())
+            {
+                DbInitializer.Initialize(ctx);
+            }
+
+            return CreateDbContextInternal();
+        }
+
+        private SchoolContext CreateDbContextInternal()
+        {
             var config = Config.GetInstance();
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
