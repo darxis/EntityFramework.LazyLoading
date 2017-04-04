@@ -5,7 +5,7 @@ Inspired by and partially based on the blog post: https://weblogs.asp.net/ricard
 
 # How to enable LazyLoading in EF Core?
 
-1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package.
+1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
 2. Create (or modify an existing) DbContext factory. Include the lines inside the two `if(_isLazy)` blocks in your DbContext factory (3 lines total - 2 before building the DbContext, and 1 after):
 ```c#
 public class MyDbContextFactory : IDbContextFactory<MyDbContext>
