@@ -8,6 +8,7 @@ services:
   - mysql
   - postgresql
 env:
+  - CONFIGURATION=Release
   - DB=PostgreSql
   - DB=MySql
 install:
@@ -15,6 +16,6 @@ install:
 before_script:
   - export Microsoft_EntityFrameworkCore_LazyLoading_Tests_DatabaseType=$DB  
 script:
-  - dotnet build -c Release
-  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet ef database update)
-  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test -c Release)
+  - dotnet build --configuration $DB
+  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet ef database update --configuration $DB)
+  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test -c $DB)
