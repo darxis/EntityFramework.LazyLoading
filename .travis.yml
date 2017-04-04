@@ -6,3 +6,6 @@ dist: trusty
 sudo: required
 services:
   - mysql
+script:
+  - dotnet restore
+  - dotnet build -c Release
