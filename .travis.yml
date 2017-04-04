@@ -18,4 +18,4 @@ before_script:
 script:
   - dotnet build --configuration $DB
   - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet ef database update --configuration $DB)
-  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test -c $DB)
+  - (cd tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests && dotnet test --configuration $DB)
