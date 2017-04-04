@@ -25,8 +25,9 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
         // LazyLoading specific
         if (_isLazy)
         {
-            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource, Microsoft.EntityFrameworkCore.LazyLoading.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>>();
+            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource, Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>>();
             dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Internal.IConcurrencyDetector, Microsoft.EntityFrameworkCore.LazyLoading.Internal.ConcurrencyDetector>();
+            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Query.Internal.ICompiledQueryCache, Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal.PerDbContextCompiledQueryCache>();
         }
             
 
@@ -36,7 +37,8 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
         // LazyLoading specific
         if (_isLazy)
         {
-            (ctx.GetService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource>() as Microsoft.EntityFrameworkCore.LazyLoading.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>).SetDbContext(ctx);
+            (ctx.GetService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource>() as Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>).SetDbContext(ctx);
+            (ctx.GetService<Microsoft.EntityFrameworkCore.Query.Internal.ICompiledQueryCache>() as Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal.PerDbContextCompiledQueryCache).SetDbContext(ctx);
         }
 
         return ctx;
