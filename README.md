@@ -1,4 +1,4 @@
-# EntityFramework.LazyLoading
+# EntityFramework.LazyLoading [![Build Status](https://travis-ci.org/darxis/EntityFramework.LazyLoading.svg?branch=master)](https://travis-ci.org/darxis/EntityFramework.LazyLoading)
 Lazy Loading for EF Core
 
 Inspired by and partially based on the blog post: https://weblogs.asp.net/ricardoperes/implementing-missing-features-in-entity-framework-core-part-6-lazy-loading
