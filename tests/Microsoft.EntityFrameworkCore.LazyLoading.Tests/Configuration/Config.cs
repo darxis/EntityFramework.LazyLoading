@@ -9,7 +9,8 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
         public enum Database
         {
             SqlServer,
-            MySql
+            MySql,
+            PostgreSql
         }
 
         public Database DatabaseType { get; }
@@ -17,6 +18,8 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
         public DatabaseConfig SqlServerDatabaseConfig { get; }
 
         public DatabaseConfig MySqlDatabaseConfig { get; }
+
+        public DatabaseConfig PostgreSqlDatabaseConfig { get; }
 
         private Config()
         {
@@ -28,6 +31,8 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
 
             SqlServerDatabaseConfig = new DatabaseConfig(config["SqlServer:ConnectionString"]);
             MySqlDatabaseConfig = new DatabaseConfig(config["MySql:ConnectionString"]);
+            PostgreSqlDatabaseConfig = new DatabaseConfig(config["PostgreSql:ConnectionString"]);
+
             if (!Enum.TryParse(config["DatabaseType"], true, out Database parsedDatabase))
             {
                 throw new Exception($"Invalid database type (was '{config["DatabaseType"]}')");

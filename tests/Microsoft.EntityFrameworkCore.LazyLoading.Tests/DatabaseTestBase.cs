@@ -29,6 +29,10 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
                     dbContextOptionsBuilder
                         .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
                     break;
+                case Config.Database.PostgreSql:
+                    dbContextOptionsBuilder
+                        .UseNpgsql(config.PostgreSqlDatabaseConfig.ConnectionString);
+                    break;
                 default:
                     throw new Exception($"Unknown database type (was '{config.DatabaseType}')");
             }
