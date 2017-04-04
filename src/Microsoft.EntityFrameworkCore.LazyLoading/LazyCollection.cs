@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
+using Microsoft.EntityFrameworkCore.LazyLoading.Internal.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
