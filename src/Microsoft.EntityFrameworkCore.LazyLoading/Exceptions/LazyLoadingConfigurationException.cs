@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.EntityFrameworkCore.LazyLoading.Internal.Exceptions
+namespace Microsoft.EntityFrameworkCore.LazyLoading.Exceptions
 {
     public class LazyLoadingConfigurationException : Exception
     {

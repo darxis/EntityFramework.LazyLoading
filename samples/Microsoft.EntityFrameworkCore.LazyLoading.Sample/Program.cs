@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data;
 using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory;
+using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models;
 using System;
 using System.Linq;
 
@@ -30,6 +31,17 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
                 Console.WriteLine($"Instructor has {(instructorWithOfficeAssignment.OfficeAssignment == null ? "no (WTF? We just queried instructors with OfficeAssignment!)" : "an")} OfficeAssignment.");
             }
 
+            using (var dbContext = lazyFactory.Create(factoryOptions))
+            {
+                var instructorAbercrombie = dbContext.Set<Instructor>().First(x => x.LastName == "Abercrombie");
+
+                var coursesOfinstructorAbercrombie = instructorAbercrombie.CourseAssignments.Select(x => x.Course);
+
+                var courseCount = coursesOfinstructorAbercrombie.Count();
+
+                Console.WriteLine($"Instructor Abercrombie has {courseCount} courses.");
+            }
+
             using (var dbContext = defaultFactory.Create(factoryOptions))
             {
                 var student = dbContext.Students.First();
@@ -37,7 +49,6 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
                 {
                     var deptName = student.Enrollments.First().Course.Department.Name;
                     Console.WriteLine($"Oops... Something didn't work. LazyLoading should not be enabled by default.");
-
                 }
                 catch (ArgumentNullException)
                 {

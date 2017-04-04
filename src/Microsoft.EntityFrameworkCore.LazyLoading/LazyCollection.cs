@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.LazyLoading.Exceptions;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
-using Microsoft.EntityFrameworkCore.LazyLoading.Internal.Exceptions;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,18 +26,14 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
 
         private void EnsureLoaded()
         {
-            if (_loaded == false)
+            if (!_loaded && !_loading)
             {
-                if (_loading == true)
-                {
-                    return;
-                }
-
                 _loading = true;
 
                 var concurrencyDetector = _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
                 if (concurrencyDetector == null)
                 {
+                    _loading = false;
                     throw new LazyLoadingConfigurationException($"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
                 }
 
@@ -96,13 +91,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
             }
         }
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
+        bool ICollection<T>.IsReadOnly => false;
 
         void ICollection<T>.Add(T item)
         {

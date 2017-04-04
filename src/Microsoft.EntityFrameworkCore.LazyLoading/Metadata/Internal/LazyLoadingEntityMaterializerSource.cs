@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Microsoft.EntityFrameworkCore.LazyLoading.Internal
+namespace Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal
 {
     public class LazyLoadingEntityMaterializerSource<TDbContext> : EntityMaterializerSource, ILazyLoadingEntityMaterializerSource<TDbContext>
         where TDbContext : DbContext
@@ -33,7 +33,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Internal
 
             var constructExpr = blockExpr.Expressions[0] as BinaryExpression;
 
-            Debug.Assert(blockExpr != null, "First Expression of BlockExpression was not a BinaryExpression.");
+            Debug.Assert(constructExpr != null, "First Expression of BlockExpression was not a BinaryExpression.");
 
             var instanceExpr = constructExpr.Left;
 
@@ -67,7 +67,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Internal
                     if (fieldTypeInfo.IsAssignableFrom(typeof(LazyReference<>).MakeGenericType(fieldTypeInfo.GenericTypeArguments).GetTypeInfo()))
                     {
                         var fieldExpr = Expression.Field(instanceExpr, field.Name);
-                        var setDbContextMethodCallExpr = Expression.Call(fieldExpr, nameof(LazyReference<DbContext>.SetContext), new Type[] { }, new[] { Expression.Constant(_ctx) });
+                        var setDbContextMethodCallExpr = Expression.Call(fieldExpr, nameof(LazyReference<DbContext>.SetContext), new Type[] { }, Expression.Constant(_ctx));
                         newExpressions.Add(setDbContextMethodCallExpr);
                     }
                 }
@@ -98,7 +98,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Internal
 
             Debug.Assert(constructor != null, "Valid constructor for LazyCollection was not found.");
 
-            return Expression.New(constructor, new Expression[] { ctxExpr, parentExpr, collectionNameExpr });
+            return Expression.New(constructor, ctxExpr, parentExpr, collectionNameExpr);
         }
     }
 }
