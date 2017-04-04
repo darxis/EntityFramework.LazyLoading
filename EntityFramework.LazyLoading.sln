@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{46D6F802-03D6-42D0-8BA7-D7D15863CB1C}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.EntityFrameworkCore.LazyLoading.Sample", "samples\Microsoft.EntityFrameworkCore.LazyLoading.Sample\Microsoft.EntityFrameworkCore.LazyLoading.Sample.csproj", "{F7F9810A-6634-42DF-800D-F3E439FB21FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.EntityFrameworkCore.LazyLoading", "src\Microsoft.EntityFrameworkCore.LazyLoading\Microsoft.EntityFrameworkCore.LazyLoading.csproj", "{A8542DA0-CC74-4643-BED6-5EDE322470F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{12D5BAB5-F68A-4610-A55E-09A727525B6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.EntityFrameworkCore.LazyLoading.Tests", "tests\Microsoft.EntityFrameworkCore.LazyLoading.Tests\Microsoft.EntityFrameworkCore.LazyLoading.Tests.csproj", "{2FB7164B-0BBB-4EDE-A745-357F4CE2498B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,10 @@ Global
 		{A8542DA0-CC74-4643-BED6-5EDE322470F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8542DA0-CC74-4643-BED6-5EDE322470F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8542DA0-CC74-4643-BED6-5EDE322470F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB7164B-0BBB-4EDE-A745-357F4CE2498B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB7164B-0BBB-4EDE-A745-357F4CE2498B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB7164B-0BBB-4EDE-A745-357F4CE2498B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB7164B-0BBB-4EDE-A745-357F4CE2498B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F7F9810A-6634-42DF-800D-F3E439FB21FB} = {4B5016C4-E1A4-44CE-9F37-6264691567B6}
 		{A8542DA0-CC74-4643-BED6-5EDE322470F7} = {46D6F802-03D6-42D0-8BA7-D7D15863CB1C}
+		{2FB7164B-0BBB-4EDE-A745-357F4CE2498B} = {12D5BAB5-F68A-4610-A55E-09A727525B6B}
 	EndGlobalSection
 EndGlobal
