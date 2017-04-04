@@ -63,6 +63,7 @@ public class Child
         {
             _parentLazy.SetValue(value);
         }
+    }
 }
 ```
 4. That's all, LazyLoading enabled.
