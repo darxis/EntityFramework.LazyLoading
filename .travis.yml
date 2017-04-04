@@ -9,3 +9,4 @@ services:
 script:
   - dotnet restore
   - dotnet build -c Release
+  - dotnet test tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests/Microsoft.EntityFrameworkCore.LazyLoading.Tests.csproj
