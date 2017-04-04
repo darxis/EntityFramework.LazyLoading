@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal;
@@ -6,10 +7,11 @@ using Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration;
 using Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
 {
-    public abstract class SqlServerDatabaseTestBase
+    public abstract class DatabaseTestBase
     {
         protected SchoolContext CreateDbContext()
         {
@@ -17,8 +19,19 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
 
-            dbContextOptionsBuilder
-                .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
+            switch (config.DatabaseType)
+            {
+                case Config.Database.MySql:
+                    dbContextOptionsBuilder
+                        .UseMySQL(config.SqlServerDatabaseConfig.ConnectionString);
+                    break;
+                case Config.Database.SqlServer:
+                    dbContextOptionsBuilder
+                        .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
+                    break;
+                default:
+                    throw new Exception($"Unknown database type (was '{config.DatabaseType}')");
+            }
 
             // LazyLoading specific
             dbContextOptionsBuilder.ReplaceService<IEntityMaterializerSource, LazyLoadingEntityMaterializerSource<SchoolContext>>();
