@@ -1,0 +1,3 @@
+language: csharp
+solution: EntityFramework.LazyLoading.sln
+dotnet: 1.0.1
