@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
+using Microsoft.EntityFrameworkCore.LazyLoading.Internal.Exceptions;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading
 {

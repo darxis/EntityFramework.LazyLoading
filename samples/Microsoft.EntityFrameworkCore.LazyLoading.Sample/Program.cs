@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data;
 using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory;
-using Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
 {
@@ -14,8 +10,8 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
     {
         static void Main(string[] args)
         {
-            var lazyFactory = new LazySchoolContextFactory();
-            var defaultFactory = new DefaultSchoolContextFactory();
+            var lazyFactory = new SchoolContextFactory(true);
+            var defaultFactory = new SchoolContextFactory(false);
             var factoryOptions = new DbContextFactoryOptions();
 
             using (var dbContext = lazyFactory.Create(factoryOptions))
