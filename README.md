@@ -6,7 +6,7 @@ Inspired by and partially based on the blog post: https://weblogs.asp.net/ricard
 # How to enable LazyLoading in EF Core?
 
 1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
-2. Create (or modify an existing) DbContext factory. Include the lines inside the two `if(_isLazy)` blocks in your DbContext factory (3 lines total - 2 before building the DbContext, and 1 after):
+2. Create (or modify an existing) DbContext factory. Include the lines inside the two `if(_isLazy)` blocks in your DbContext factory (4 lines total - 3 before building the DbContext, and 1 after):
 ```c#
 public class MyDbContextFactory : IDbContextFactory<MyDbContext>
 {
@@ -38,7 +38,6 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
         if (_isLazy)
         {
             (ctx.GetService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource>() as Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>).SetDbContext(ctx);
-            (ctx.GetService<Microsoft.EntityFrameworkCore.Query.Internal.ICompiledQueryCache>() as Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal.PerDbContextCompiledQueryCache).SetDbContext(ctx);
         }
 
         return ctx;
