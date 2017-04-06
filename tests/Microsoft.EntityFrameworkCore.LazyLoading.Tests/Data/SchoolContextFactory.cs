@@ -46,7 +46,6 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data
             // LazyLoading specific
             // ReSharper disable PossibleNullReferenceException
             (ctx.GetService<IEntityMaterializerSource>() as LazyLoadingEntityMaterializerSource<SchoolContext>).SetDbContext(ctx);
-            (ctx.GetService<ICompiledQueryCache>() as PerDbContextCompiledQueryCache).SetDbContext(ctx);
             // ReSharper restore PossibleNullReferenceException
 
             ctx.Database.EnsureCreated();

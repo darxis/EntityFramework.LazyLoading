@@ -9,16 +9,12 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal
 {
     public class PerDbContextCompiledQueryCache : CompiledQueryCache
     {
-        private DbContext _dbContext;
+        private ICurrentDbContext _dbContext;
 
         public PerDbContextCompiledQueryCache(IDbContextServices contextServices)
             : base(contextServices)
         {
-        }
-
-        public void SetDbContext(DbContext dbContext)
-        {
-            _dbContext = dbContext;
+            _dbContext = contextServices.CurrentContext;
         }
 
         public override Func<QueryContext, IAsyncEnumerable<TResult>> GetOrAddAsyncQuery<TResult>(object cacheKey, Func<Func<QueryContext, IAsyncEnumerable<TResult>>> compiler)

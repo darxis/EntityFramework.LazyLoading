@@ -40,8 +40,9 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
             // LazyLoading specific
             if (_isLazy)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 (ctx.GetService<IEntityMaterializerSource>() as LazyLoadingEntityMaterializerSource<SchoolContext>).SetDbContext(ctx);
-                (ctx.GetService<ICompiledQueryCache>() as PerDbContextCompiledQueryCache).SetDbContext(ctx);
+                // ReSharper restore PossibleNullReferenceException
             }
 
             return ctx;
