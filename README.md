@@ -1,12 +1,18 @@
-# EntityFramework.LazyLoading
+# EntityFramework.LazyLoading [![Build Status](https://travis-ci.org/darxis/EntityFramework.LazyLoading.svg?branch=dev)](https://travis-ci.org/darxis/EntityFramework.LazyLoading)
 Lazy Loading for EF Core
 
 Inspired by and partially based on the blog post: https://weblogs.asp.net/ricardoperes/implementing-missing-features-in-entity-framework-core-part-6-lazy-loading
 
 # How to enable LazyLoading in EF Core?
 
-1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
-2. Create (or modify an existing) DbContext factory. Include the lines inside the two `if(_isLazy)` blocks in your DbContext factory (3 lines total - 2 before building the DbContext, and 1 after):
+Enabling LazyLoading in EF Core is extremely easy with this library. You just need to call `UseLazyLoading()` (see step 2 below).
+
+However, you will need to slightly modify your entity classes, but just the References, not the Collections (see step 3 below).
+
+## Step 1 - Nuget package
+Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
+## Step 2 - Configure the DbContext builder
+Call `UseLazyLoading()` on the `DbContextOptionsBuilder` when creating the `DbContext`.
 ```c#
 public class MyDbContextFactory : IDbContextFactory<MyDbContext>
 {
@@ -22,30 +28,15 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<MyDbContext>();
         dbContextOptionsBuilder.UseSqlServer("<some_connection_string>");
 
-        // LazyLoading specific
-        if (_isLazy)
-        {
-            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource, Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>>();
-            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Internal.IConcurrencyDetector, Microsoft.EntityFrameworkCore.LazyLoading.Internal.ConcurrencyDetector>();
-            dbContextOptionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Query.Internal.ICompiledQueryCache, Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal.PerDbContextCompiledQueryCache>();
-        }
-            
+        // Here we enable LazyLoading
+        dbContextOptionsBuilder.UseLazyLoading();
 
-        // Build DbContext
-        var ctx = new MyDbContext(dbContextOptionsBuilder.Options);
-
-        // LazyLoading specific
-        if (_isLazy)
-        {
-            (ctx.GetService<Microsoft.EntityFrameworkCore.Metadata.Internal.IEntityMaterializerSource>() as Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal.LazyLoadingEntityMaterializerSource<MyDbContext>).SetDbContext(ctx);
-            (ctx.GetService<Microsoft.EntityFrameworkCore.Query.Internal.ICompiledQueryCache>() as Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal.PerDbContextCompiledQueryCache).SetDbContext(ctx);
-        }
-
-        return ctx;
+        return new MyDbContext(dbContextOptionsBuilder.Options);
     }
 }
 ```
-3. In your model you need to declare References using the type LazyReference<T>. Collections don't require additional configuration in your model, just use the ICollection<> type.
+## Step 3 - Adjust the model
+In your model you need to declare References using the type `LazyReference<T>`. Collections don't require additional configuration in your model, just use the `ICollection<>` type.
 ```c#
 public class Parent
 {
@@ -68,4 +59,5 @@ public class Child
     }
 }
 ```
-4. That's all, LazyLoading enabled.
+## Step 4 - Done!
+That's all, LazyLoading enabled! It was so easy, wasn't it?

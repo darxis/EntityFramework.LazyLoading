@@ -5,26 +5,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal
 {
-    public class LazyLoadingEntityMaterializerSource<TDbContext> : EntityMaterializerSource, ILazyLoadingEntityMaterializerSource<TDbContext>
-        where TDbContext : DbContext
+    public class LazyLoadingEntityMaterializerSource : EntityMaterializerSource, ILazyLoadingEntityMaterializerSource
     {
-        private TDbContext _ctx;
+        private readonly ICurrentDbContext _currentDbContext;
 
-        public void SetDbContext(TDbContext ctx)
+        public LazyLoadingEntityMaterializerSource(ICurrentDbContext currentDbContext)
         {
-            _ctx = ctx;
+            _currentDbContext = currentDbContext;
         }
 
         public override Expression CreateMaterializeExpression(IEntityType entityType, Expression valueBufferExpression, int[] indexMap = null)
         {
-            if (_ctx == null)
-            {
-                throw new InvalidOperationException("DbContext must be manually passed to LazyLoadingEntityMaterializerSource in order to use LazyLoading.");
-            }
-
             var expr = base.CreateMaterializeExpression(entityType, valueBufferExpression, indexMap);
 
             var blockExpr = expr as BlockExpression;
@@ -49,7 +44,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal
                 {
                     if (navigationTypeInfo.IsAssignableFrom(typeof(LazyCollection<>).MakeGenericType(navigationTypeInfo.GenericTypeArguments).GetTypeInfo()))
                     {
-                        var createLazyCollectionConstructExpression = CreateLazyCollectionConstructExpression(navigationTypeInfo.GenericTypeArguments[0], _ctx, instanceExpr, navigation.Name);
+                        var createLazyCollectionConstructExpression = CreateLazyCollectionConstructExpression(navigationTypeInfo.GenericTypeArguments[0], _currentDbContext.Context, instanceExpr, navigation.Name);
                         var propertyOrFieldExpr = Expression.PropertyOrField(instanceExpr, navigation.Name);
                         var assignExpr = Expression.Assign(propertyOrFieldExpr, createLazyCollectionConstructExpression);
                         newExpressions.Add(assignExpr);
@@ -67,7 +62,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal
                     if (fieldTypeInfo.IsAssignableFrom(typeof(LazyReference<>).MakeGenericType(fieldTypeInfo.GenericTypeArguments).GetTypeInfo()))
                     {
                         var fieldExpr = Expression.Field(instanceExpr, field.Name);
-                        var setDbContextMethodCallExpr = Expression.Call(fieldExpr, nameof(LazyReference<DbContext>.SetContext), new Type[] { }, Expression.Constant(_ctx));
+                        var setDbContextMethodCallExpr = Expression.Call(fieldExpr, nameof(LazyReference<DbContext>.SetContext), new Type[] { }, Expression.Constant(_currentDbContext.Context));
                         newExpressions.Add(setDbContextMethodCallExpr);
                     }
                 }

@@ -28,25 +28,32 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
 
         public T GetValue(object parent, string referenceName)
         {
-            if (_ctx != null && !_isLoaded && !_isLoading)
+            if (_ctx == null || _isLoaded || _isLoading)
             {
-                _isLoading = true;
+                return _value;
+            }
 
-                var concurrencyDetector = _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
+            _isLoading = true;
+
+            try
+            {
+                var concurrencyDetector =
+                    _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
                 if (concurrencyDetector == null)
                 {
-                    _isLoading = false;
-                    throw new LazyLoadingConfigurationException($"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
+                    throw new LazyLoadingConfigurationException(
+                        $"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
                 }
 
                 if (concurrencyDetector.IsInOperation())
                 {
-                    _isLoading = false;
                     return _value;
                 }
 
                 _ctx.Entry(parent).Reference(referenceName).Load();
-
+            }
+            finally
+            {
                 _isLoading = false;
             }
 

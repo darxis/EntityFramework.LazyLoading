@@ -26,7 +26,10 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data
             modelBuilder.Entity<Instructor>();
             modelBuilder.Entity<OfficeAssignment>();
             modelBuilder.Entity<CourseAssignment>();
-            modelBuilder.Entity<Person>();
+            modelBuilder.Entity<Person>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<Student>(nameof(Student))
+                .HasValue<Instructor>(nameof(Instructor));
 
             modelBuilder.Entity<CourseAssignment>()
                 .HasKey(c => new { CourseID = c.CourseId, InstructorID = c.InstructorId });

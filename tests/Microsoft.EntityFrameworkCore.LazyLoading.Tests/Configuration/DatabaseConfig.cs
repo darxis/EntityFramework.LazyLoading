@@ -1,12 +1,36 @@
-﻿namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
+﻿using System;
+
+namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
 {
+    public enum ConnectionStringSelector
+    {
+        Main,
+        Second
+    }
+
     public class DatabaseConfig
     {
-        public string ConnectionString { get; }
+        public string MainConnectionString { get; }
 
-        public DatabaseConfig(string connectionString)
+        public string SecondConnectionString { get; }
+
+        public DatabaseConfig(string mainConnectionString, string secondConnectionString)
         {
-            ConnectionString = connectionString;
+            MainConnectionString = mainConnectionString;
+            SecondConnectionString = secondConnectionString;
+        }
+
+        public string GetConnectionString(ConnectionStringSelector connectionStringSelector)
+        {
+            switch (connectionStringSelector)
+            {
+                case ConnectionStringSelector.Main:
+                    return MainConnectionString;
+                case ConnectionStringSelector.Second:
+                    return SecondConnectionString;
+                default:
+                    throw new Exception($"Unknown {typeof(ConnectionStringSelector)} value (was {connectionStringSelector}).");
+            }
         }
     }
 }

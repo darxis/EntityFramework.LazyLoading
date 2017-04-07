@@ -15,7 +15,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
         private readonly DbContext _ctx;
         private readonly string _collectionName;
         private readonly object _parent;
-        private readonly IList<T> _entries = new List<T>();
+        private IList<T> _entries = new List<T>();
 
         public LazyCollection(DbContext ctx, object parent, string collectionName)
         {
@@ -26,48 +26,41 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
 
         private void EnsureLoaded()
         {
-            if (!_loaded && !_loading)
+            if (_loaded || _loading)
             {
-                _loading = true;
+                return;
+            }
 
-                var concurrencyDetector = _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
+            _loading = true;
+
+            try
+            {
+                var concurrencyDetector =
+                    _ctx.GetService<EntityFrameworkCore.Internal.IConcurrencyDetector>() as IConcurrencyDetector;
                 if (concurrencyDetector == null)
                 {
-                    _loading = false;
-                    throw new LazyLoadingConfigurationException($"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
+                    throw new LazyLoadingConfigurationException(
+                        $"Service of type '{typeof(EntityFrameworkCore.Internal.IConcurrencyDetector).FullName}' must be replaced by a service of type '{typeof(IConcurrencyDetector).FullName}' in order to use LazyLoading");
                 }
 
                 if (concurrencyDetector.IsInOperation())
                 {
-                    _loading = false;
                     return;
                 }
 
-                var entries = _ctx
+                _entries = _ctx
                     .Entry(_parent)
                     .Collection(_collectionName)
                     .Query()
                     .OfType<T>()
                     .ToList();
-
-                /*if (typeof(ILazyLoading).IsAssignableFrom(typeof(T)))
-                {
-                    foreach (var entry in entries)
-                    {
-                        ((ILazyLoading)entry).UseLazyLoading(_ctx);
-                    }
-                }*/
-
-                _entries.Clear();
-
-                foreach (var entry in entries)
-                {
-                    _entries.Add(entry);
-                }
-
-                _loaded = true;
+            }
+            finally
+            {
                 _loading = false;
             }
+
+            _loaded = true;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -160,12 +153,6 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
         {
             EnsureLoaded();
             return _entries.ToString();
-        }
-
-        public override int GetHashCode()
-        {
-            EnsureLoaded();
-            return _entries.GetHashCode();
         }
     }
 }
