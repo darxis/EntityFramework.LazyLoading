@@ -9,8 +9,8 @@ Enabling LazyLoading in EF Core is extremely easy with this library. You just ne
 
 However, you will need to slightly modify your entity classes, but just the References, not the Collections (see point 3 below).
 
-1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
-2. Call `UseLazyLoading()` on the `DbContextOptionsBuilder` when creating the `DbContext`.
+#### 1. Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
+#### 2. Call `UseLazyLoading()` on the `DbContextOptionsBuilder` when creating the `DbContext`.
 ```c#
 public class MyDbContextFactory : IDbContextFactory<MyDbContext>
 {
@@ -32,7 +32,7 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
     }
 }
 ```
-3. In your model you need to declare References using the type `LazyReference<T>`. Collections don't require additional configuration in your model, just use the `ICollection<>` type.
+#### 3. In your model you need to declare References using the type `LazyReference<T>`. Collections don't require additional configuration in your model, just use the `ICollection<>` type.
 ```c#
 public class Parent
 {
@@ -55,4 +55,4 @@ public class Child
     }
 }
 ```
-4. That's all, LazyLoading enabled! It was so easy, wasn't it?
+#### 4. That's all, LazyLoading enabled! It was so easy, wasn't it?
