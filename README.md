@@ -5,9 +5,9 @@ Inspired by and partially based on the blog post: https://weblogs.asp.net/ricard
 
 # How to enable LazyLoading in EF Core?
 
-Enabling LazyLoading in EF Core is extremely easy with this library. You just need to call `UseLazyLoading()` (see point 2 below).
+Enabling LazyLoading in EF Core is extremely easy with this library. You just need to call `UseLazyLoading()` (see step 2 below).
 
-However, you will need to slightly modify your entity classes, but just the References, not the Collections (see point 3 below).
+However, you will need to slightly modify your entity classes, but just the References, not the Collections (see step 3 below).
 
 ## Step 1 - Nuget package
 Reference the `Microsoft.EntityFrameworkCore.LazyLoading` NuGet package (https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.LazyLoading/).
