@@ -9,6 +9,8 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
 {
     class Program
     {
+        // ReSharper disable once UnusedMember.Local
+        // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
         {
             var lazyFactory = new SchoolContextFactory(true);
@@ -47,8 +49,9 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample
                 var student = dbContext.Students.First();
                 try
                 {
+                    // ReSharper disable once UnusedVariable
                     var deptName = student.Enrollments.First().Course.Department.Name;
-                    Console.WriteLine($"Oops... Something didn't work. LazyLoading should not be enabled by default.");
+                    Console.WriteLine("Oops... Something didn't work. LazyLoading should not be enabled by default.");
                 }
                 catch (ArgumentNullException)
                 {

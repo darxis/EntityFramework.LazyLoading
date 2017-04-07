@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
-using Microsoft.EntityFrameworkCore.LazyLoading.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.LazyLoading.Query.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
 {
@@ -23,29 +18,17 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Data.Factory
         public SchoolContext Create(DbContextFactoryOptions options)
         {
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
+
             dbContextOptionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ContosoUniversity;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             // LazyLoading specific
             if (_isLazy)
             {
-                dbContextOptionsBuilder.ReplaceService<IEntityMaterializerSource, LazyLoadingEntityMaterializerSource<SchoolContext>>();
-                dbContextOptionsBuilder.ReplaceService<EntityFrameworkCore.Internal.IConcurrencyDetector, ConcurrencyDetector>();
-                dbContextOptionsBuilder.ReplaceService<ICompiledQueryCache, PerDbContextCompiledQueryCache>();
+                dbContextOptionsBuilder.UseLazyLoading();
             }
-            
 
             // Build DbContext
-            var ctx = new SchoolContext(dbContextOptionsBuilder.Options);
-
-            // LazyLoading specific
-            if (_isLazy)
-            {
-                // ReSharper disable once PossibleNullReferenceException
-                (ctx.GetService<IEntityMaterializerSource>() as LazyLoadingEntityMaterializerSource<SchoolContext>).SetDbContext(ctx);
-                // ReSharper restore PossibleNullReferenceException
-            }
-
-            return ctx;
+            return new SchoolContext(dbContextOptionsBuilder.Options);
         }
     }
 }
