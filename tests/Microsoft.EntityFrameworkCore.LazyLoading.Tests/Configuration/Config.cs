@@ -29,9 +29,9 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Configuration
                 .AddEnvironmentVariables("Microsoft_EntityFrameworkCore_LazyLoading_Tests_")
                 .Build();
 
-            SqlServerDatabaseConfig = new DatabaseConfig(config["SqlServer:ConnectionString"]);
-            MySqlDatabaseConfig = new DatabaseConfig(config["MySql:ConnectionString"]);
-            PostgreSqlDatabaseConfig = new DatabaseConfig(config["PostgreSql:ConnectionString"]);
+            SqlServerDatabaseConfig = new DatabaseConfig(config["SqlServer:MainConnectionString"], config["SqlServer:SecondConnectionString"]);
+            MySqlDatabaseConfig = new DatabaseConfig(config["MySql:MainConnectionString"], config["MySql:SecondConnectionString"]);
+            PostgreSqlDatabaseConfig = new DatabaseConfig(config["PostgreSql:MainConnectionString"], config["PostgreSql:SecondConnectionString"]);
 
             if (!Enum.TryParse(config["DatabaseType"], true, out Database parsedDatabase))
             {

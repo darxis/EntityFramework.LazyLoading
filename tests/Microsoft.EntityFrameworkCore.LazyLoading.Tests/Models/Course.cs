@@ -24,7 +24,9 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Models
             get => _departmentLazy.GetValue(this, nameof(Department));
             set => _departmentLazy.SetValue(value);
         }
+
         public ICollection<Enrollment> Enrollments { get; set; }
+
         public ICollection<CourseAssignment> CourseAssignments { get; set; }
     }
 }

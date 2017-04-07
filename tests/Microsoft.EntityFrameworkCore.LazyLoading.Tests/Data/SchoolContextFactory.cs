@@ -9,6 +9,11 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data
     {
         public SchoolContext Create(DbContextFactoryOptions options)
         {
+            return Create(options, ConnectionStringSelector.Main);
+        }
+
+        public SchoolContext Create(DbContextFactoryOptions options, ConnectionStringSelector connectionStringSelector)
+        {
             var config = Config.GetInstance();
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<SchoolContext>();
@@ -17,27 +22,23 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Data
             {
                 case Config.Database.MySql:
                     dbContextOptionsBuilder
-                        .UseMySQL(config.MySqlDatabaseConfig.ConnectionString);
+                        .UseMySQL(config.MySqlDatabaseConfig.GetConnectionString(connectionStringSelector));
                     break;
                 case Config.Database.SqlServer:
                     dbContextOptionsBuilder
-                        .UseSqlServer(config.SqlServerDatabaseConfig.ConnectionString);
+                        .UseSqlServer(config.SqlServerDatabaseConfig.GetConnectionString(connectionStringSelector));
                     break;
                 case Config.Database.PostgreSql:
                     dbContextOptionsBuilder
-                        .UseNpgsql(config.PostgreSqlDatabaseConfig.ConnectionString);
+                        .UseNpgsql(config.PostgreSqlDatabaseConfig.GetConnectionString(connectionStringSelector));
                     break;
                 default:
                     throw new Exception($"Unknown database type (was '{config.DatabaseType}')");
             }
 
-            // LazyLoading specific
             dbContextOptionsBuilder.UseLazyLoading();
 
             var ctx = new SchoolContext(dbContextOptionsBuilder.Options);
-
-            ctx.Database.EnsureCreated();
-            ctx.Database.Migrate();
 
             return ctx;
         }
