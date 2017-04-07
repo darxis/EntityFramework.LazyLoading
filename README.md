@@ -27,6 +27,8 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
     {
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<MyDbContext>();
         dbContextOptionsBuilder.UseSqlServer("<some_connection_string>");
+
+        // Here we enable LazyLoading
         dbContextOptionsBuilder.UseLazyLoading();
 		
         // Build DbContext
