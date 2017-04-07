@@ -30,9 +30,8 @@ public class MyDbContextFactory : IDbContextFactory<MyDbContext>
 
         // Here we enable LazyLoading
         dbContextOptionsBuilder.UseLazyLoading();
-		
-        // Build DbContext
-        return MyDbContext(dbContextOptionsBuilder.Options);
+
+        return new MyDbContext(dbContextOptionsBuilder.Options);
     }
 }
 ```
