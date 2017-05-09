@@ -51,6 +51,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
                 }
 
                 _ctx.Entry(parent).Reference(referenceName).Load();
+                _isLoaded = true;
             }
             finally
             {
