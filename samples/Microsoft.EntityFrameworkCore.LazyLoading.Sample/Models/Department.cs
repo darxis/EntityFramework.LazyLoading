@@ -31,7 +31,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _administratorLazy.GetValue(this, nameof(Administrator));
+                return _administratorLazy.GetValue(this);
             }
             set
             {

@@ -15,7 +15,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _instructorLazy.GetValue(this, nameof(Instructor));
+                return _instructorLazy.GetValue(this);
             }
             set
             {

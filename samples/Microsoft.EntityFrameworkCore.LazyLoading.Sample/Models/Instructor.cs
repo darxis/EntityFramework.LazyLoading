@@ -17,7 +17,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _officeAssignmentLazy.GetValue(this, nameof(OfficeAssignment));
+                return _officeAssignmentLazy.GetValue(this);
             }
             set
             {

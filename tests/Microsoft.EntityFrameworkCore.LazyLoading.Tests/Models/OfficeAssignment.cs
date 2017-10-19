@@ -13,7 +13,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Models
         private readonly LazyReference<Instructor> _instructorLazy = new LazyReference<Instructor>();
         public Instructor Instructor
         {
-            get => _instructorLazy.GetValue(this, nameof(Instructor));
+            get => _instructorLazy.GetValue(this);
             set => _instructorLazy.SetValue(value);
         }
     }

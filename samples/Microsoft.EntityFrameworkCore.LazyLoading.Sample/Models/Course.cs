@@ -23,7 +23,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _departmentLazy.GetValue(this, nameof(Department));
+                return _departmentLazy.GetValue(this);
             }
             set
             {

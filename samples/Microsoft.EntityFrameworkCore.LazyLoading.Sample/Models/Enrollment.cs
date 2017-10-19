@@ -20,7 +20,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _courseLazy.GetValue(this, nameof(Course));
+                return _courseLazy.GetValue(this);
             }
             set
             {
@@ -32,7 +32,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Sample.Models
         {
             get
             {
-                return _studentLazy.GetValue(this, nameof(Student));
+                return _studentLazy.GetValue(this);
             }
             set
             {

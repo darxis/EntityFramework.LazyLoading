@@ -9,7 +9,7 @@
         {
             get
             {
-                return _instructorLazy.GetValue(this, nameof(Instructor));
+                return _instructorLazy.GetValue(this);
             }
             set
             {
@@ -21,7 +21,7 @@
         {
             get
             {
-                return _courseLazy.GetValue(this, nameof(Course));
+                return _courseLazy.GetValue(this);
             }
             set
             {
