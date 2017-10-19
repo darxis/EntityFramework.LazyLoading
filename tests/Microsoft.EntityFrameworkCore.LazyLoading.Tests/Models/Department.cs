@@ -29,7 +29,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Models
 
         public Instructor Administrator
         {
-            get => _administratorLazy.GetValue(this, nameof(Administrator));
+            get => _administratorLazy.GetValue(this);
             set => _administratorLazy.SetValue(value);
         }
         public ICollection<Course> Courses { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.LazyLoading.Exceptions;
 using Microsoft.EntityFrameworkCore.LazyLoading.Internal;
 
@@ -26,7 +27,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading
             _isLoaded = true;
         }
 
-        public T GetValue(object parent, string referenceName)
+        public T GetValue(object parent, [CallerMemberName] string referenceName = null)
         {
             if (_ctx == null || _isLoaded || _isLoading)
             {

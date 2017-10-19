@@ -50,7 +50,7 @@ public class Child
     {
         get
         {
-            return _parentLazy.GetValue(this, nameof(Parent));
+            return _parentLazy.GetValue(this);
         }
         set
         {

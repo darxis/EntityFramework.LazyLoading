@@ -21,7 +21,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Models
         private readonly LazyReference<Department> _departmentLazy = new LazyReference<Department>();
         public Department Department
         {
-            get => _departmentLazy.GetValue(this, nameof(Department));
+            get => _departmentLazy.GetValue(this);
             set => _departmentLazy.SetValue(value);
         }
 

@@ -15,7 +15,7 @@ namespace Microsoft.EntityFrameworkCore.LazyLoading.Tests.Models
         private readonly LazyReference<OfficeAssignment> _officeAssignmentLazy = new LazyReference<OfficeAssignment>();
         public OfficeAssignment OfficeAssignment
         {
-            get => _officeAssignmentLazy.GetValue(this, nameof(OfficeAssignment));
+            get => _officeAssignmentLazy.GetValue(this);
             set => _officeAssignmentLazy.SetValue(value);
         }
     }
